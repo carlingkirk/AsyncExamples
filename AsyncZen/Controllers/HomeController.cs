@@ -28,7 +28,7 @@ namespace AsyncZen.Controllers
 
         private async Task<HttpResponseMessage> GetZenResponseAsync()
         {
-            Thread.Sleep(10000);
+            await Task.Delay(10000);
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Add("User-Agent", "Anything");
