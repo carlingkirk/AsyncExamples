@@ -9,7 +9,6 @@ namespace AsyncZen.Controllers
 {
     public class DeadlockController : Controller
     {
-        // GET: Deadlock
         public ActionResult Index()
         {
             var task = GetStringAsync();
