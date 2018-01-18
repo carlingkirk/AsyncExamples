@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -13,11 +14,10 @@ namespace AsyncZen.Controllers
 {
     public class HomeController : Controller
     {
+        #region Zen
         public async Task<ActionResult> Zen()
         {
             var task = GetZenResponseAsync();
-
-            ExpensiveCPUBoundWork();
 
             var response = await task;
 
@@ -28,7 +28,6 @@ namespace AsyncZen.Controllers
 
         private async Task<HttpResponseMessage> GetZenResponseAsync()
         {
-            await Task.Delay(10000);
             using (var client = new HttpClient())
             {
                 client.DefaultRequestHeaders.Add("User-Agent", "Anything");
@@ -36,35 +35,51 @@ namespace AsyncZen.Controllers
                 return await client.GetAsync("https://api.github.com/zen");
             }
         }
+        #endregion
 
-        private void ExpensiveCPUBoundWork()
+        #region Big File
+        public async Task<ActionResult> BigFile()
         {
-            var list = Enumerable.Range(0, 10000000).ToList();
-            var list2 = Enumerable.Range(10000000, 0).ToList();
-            foreach (var item in list)
-            {
-                if (list2.Contains(item))
-                {
-                    list2.Add(item);
-                }
-            }
-        }
-
-        public async Task<ActionResult> Contexts()
-        {
-            using (var client = new HttpClient())
-            {
-                client.DefaultRequestHeaders.Add("User-Agent", "Anything");
-
-                System.Web.HttpContext.Current.Cache["test"] = 123;
-
-                var response = await client.GetAsync("https://api.github.com/zen").ConfigureAwait(true);
-
-                var item = System.Web.HttpContext.Current.Cache["test"];
-
-                ViewBag.Message = await response.Content.ReadAsStringAsync();
-            }
+            var task = LoadFileAsync();
+            ViewBag.Message = await task;
             return View();
         }
+
+        private async Task<string> LoadFileAsync()
+        {
+            var builder = new StringBuilder();
+            using (var reader = new StreamReader(Server.MapPath("~/Content/bigfile.txt")))
+            {
+                while (!reader.EndOfStream)
+                {
+                    builder.Append(await reader.ReadLineAsync());
+                    builder.Append("<br>");
+                }
+            }
+
+            return builder.ToString();
+        }
+        #endregion
+
+        #region Contexts
+        public async Task<ActionResult> Contexts()
+        {
+            System.Web.HttpContext.Current.Cache["test"] = 123;
+
+            var response = await GetZenResponseAsync().ConfigureAwait(true);
+
+            var item = System.Web.HttpContext.Current.Cache["test"];
+
+            ViewBag.Message = await response.Content.ReadAsStringAsync();
+            return View();
+        }
+        #endregion
+
+        #region Index
+        public ActionResult Index()
+        {
+            return View();
+        }
+        #endregion
     }
 }

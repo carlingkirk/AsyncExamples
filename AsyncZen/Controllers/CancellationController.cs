@@ -40,7 +40,8 @@ namespace AsyncZen.Controllers
                 while (!reader.EndOfStream)
                 {
                     token.ThrowIfCancellationRequested();
-                    await Task.Delay(10);
+                    if (lines % 100 == 0)
+                        await Task.Delay(10);
                     var line = await reader.ReadLineAsync();
                     lines++; 
                 }

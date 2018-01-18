@@ -155,10 +155,12 @@
     <Compile Include="Controllers\CancellationController.cs" />
     <Compile Include="Controllers\DeadlockController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\NumberController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Shared.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bigfile.txt" />
@@ -201,6 +203,8 @@
     <Content Include="Views\Home\Zen.cshtml" />
     <Content Include="Views\Deadlock\Index.cshtml" />
     <Content Include="Views\Cancellation\Index.cshtml" />
+    <Content Include="Views\Home\BigFile.cshtml" />
+    <Content Include="Views\Home\Contexts.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
