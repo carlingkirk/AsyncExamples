@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Mvc;
 
 namespace AsyncZen.Controllers
@@ -64,11 +58,11 @@ namespace AsyncZen.Controllers
         #region Contexts
         public async Task<ActionResult> Contexts()
         {
-            System.Web.HttpContext.Current.Cache["test"] = 123;
+            System.Web.HttpContext.Current.Cache["UserId"] = 123;
 
             var response = await GetZenResponseAsync().ConfigureAwait(true);
 
-            var item = System.Web.HttpContext.Current.Cache["test"];
+            var item = System.Web.HttpContext.Current.Cache["UserId"];
 
             ViewBag.Message = await response.Content.ReadAsStringAsync();
             return View();
