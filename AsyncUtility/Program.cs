@@ -8,7 +8,7 @@ namespace AsyncUtility
 {
     class Program
     {
-        static async Task Main(string[] args)
+        static void Main(string[] args)
         {
             var tasks = new List<Task<string>>();
             for(int i = 0; i < 100; i++)
